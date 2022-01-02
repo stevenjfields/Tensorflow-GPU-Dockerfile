@@ -107,21 +107,21 @@ COPY bashrc /etc/bash.bashrc
 RUN chmod a+rwx /etc/bash.bashrc
 
 # Changed to jupyter lab instead of jupyter
-RUN python3 -m pip install --no-cache-dir jupyterlab matplotlib
+RUN python3 -m pip install --no-cache-dir jupyter matplotlib
 # Pin ipykernel and nbformat; see https://github.com/ipython/ipykernel/issues/422
 # Pin jedi; see https://github.com/ipython/ipython/issues/12740
 RUN python3 -m pip install --no-cache-dir jupyter_http_over_ws ipykernel==5.1.1 nbformat==4.4.0 jedi==0.17.2
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
-# Removed the notebooks that were originally downloaded here.
+# Install poetry to manage python packages.
+RUN python3 -m pip install poetry
+
+# Removed the notebooks that were originally downloaded here. Added poetry folder for poetry files.
 RUN mkdir /tf/ && chmod -R a+rwx /tf/
+RUN mkdir /poetry/ && chmod -R a+rwx /poetry/
 RUN mkdir /.local && chmod a+rwx /.local
 RUN apt-get update && apt-get install -y --no-install-recommends wget git
 RUN apt-get autoremove -y && apt-get remove -y wget
-WORKDIR /tf
 EXPOSE 8888
 
 RUN python3 -m ipykernel.kernelspec
-
-# Changed command from jupyter notebook to jupyter lab
-CMD ["bash", "-c", "source /etc/bash.bashrc && jupyter lab --notebook-dir=/tf --ip 0.0.0.0 --no-browser --allow-root"]
