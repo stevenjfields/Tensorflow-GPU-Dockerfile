@@ -92,26 +92,10 @@ RUN python3 -m pip --no-cache-dir install --upgrade \
 # Some TF tools expect a "python" binary
 RUN ln -s $(which python3) /usr/local/bin/python
 
-# Options:
-#   tensorflow
-#   tensorflow-gpu
-#   tf-nightly
-#   tf-nightly-gpu
-# Set --build-arg TF_PACKAGE_VERSION=1.11.0rc0 to install a specific version.
-# Installs the latest version by default.
-ARG TF_PACKAGE=tensorflow-gpu
-ARG TF_PACKAGE_VERSION=2.7.0
-RUN python3 -m pip install --no-cache-dir ${TF_PACKAGE}${TF_PACKAGE_VERSION:+==${TF_PACKAGE_VERSION}}
+# Removed all package management originally placed here since we instead install everything using poetry.
 
 COPY bashrc /etc/bash.bashrc
 RUN chmod a+rwx /etc/bash.bashrc
-
-# Changed to jupyter lab instead of jupyter
-RUN python3 -m pip install --no-cache-dir jupyter matplotlib
-# Pin ipykernel and nbformat; see https://github.com/ipython/ipykernel/issues/422
-# Pin jedi; see https://github.com/ipython/ipython/issues/12740
-RUN python3 -m pip install --no-cache-dir jupyter_http_over_ws ipykernel==5.1.1 nbformat==4.4.0 jedi==0.17.2
-RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 # Install poetry to manage python packages.
 RUN python3 -m pip install poetry
@@ -123,5 +107,3 @@ RUN mkdir /.local && chmod a+rwx /.local
 RUN apt-get update && apt-get install -y --no-install-recommends wget git
 RUN apt-get autoremove -y && apt-get remove -y wget
 EXPOSE 8888
-
-RUN python3 -m ipykernel.kernelspec

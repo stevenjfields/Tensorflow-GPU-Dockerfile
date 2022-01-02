@@ -6,6 +6,7 @@ services:
       && python3 -m poetry config virtualenvs.create false
       && python3 -m poetry install --no-interaction --no-ansi
       && source /etc/bash.bashrc 
+      && python3 -m ipykernel.kernelspec
       && jupyter lab --notebook-dir=/tf/ --ip 0.0.0.0 --no-browser --allow-root"
     ports:
       - "8888:8888"
