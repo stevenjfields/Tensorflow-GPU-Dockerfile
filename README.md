@@ -11,8 +11,6 @@ and the bashrc file is [here](https://github.com/tensorflow/tensorflow/tree/mast
 
 # Running
 In order to run type `docker-compose up` into the command line in this directory. It will spin up the container and sync all notebooks created to the `Notebooks` folder, as well as install all packages mentioned in the pyproject.toml file.
-- **Note:** if you changed the name of the container as mentioned above you will need to make that same change inside the start.sh file.
-- If `./start.sh` doesn't work immediately try changing permissions with `sudo chmod +x start.sh`
 
 # Package Management
 I add poetry to the dockerfile to manage packages outside of the ones included in the original Dockerfile. It defaults to only include the dockerfile packages, pandas, and seaborn. Any others can be added inside of jupyter lab. Create a new window, select terminal as the type, and enter `poetry add <package_name>`.
